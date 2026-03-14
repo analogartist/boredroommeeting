@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bored Room Meeting</title>
+<meta name="description" content="Thinking out loud about AI, products, and the things nobody's built yet.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c0e;
+    --surface: #141416;
+    --text: #e8e4df;
+    --text-dim: #8a8580;
+    --accent: #d4622b;
+    --border: #2a2a2e;
+    --serif: 'Instrument Serif', Georgia, serif;
+    --sans: 'DM Sans', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', 'SF Mono', monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { font-size: 18px; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 100;
+  }
+  .container { max-width: 680px; margin: 0 auto; padding: 0 1.5rem; width: 100%; }
+  .masthead {
+    padding: 6rem 0 4rem;
+    animation: fadeUp 0.8s ease-out both;
+  }
+  .masthead h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.4rem, 6vw, 3.6rem);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+  .masthead p {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+  .posts {
+    padding: 2rem 0 6rem;
+    border-top: 1px solid var(--border);
+    animation: fadeUp 0.8s ease-out 0.15s both;
+  }
+  .post-link {
+    display: block;
+    text-decoration: none;
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--border);
+    transition: all 0.25s;
+  }
+  .post-link:hover { padding-left: 0.5rem; }
+  .post-link h2 {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.3;
+    transition: color 0.25s;
+  }
+  .post-link:hover h2 { color: var(--accent); }
+  .post-link .excerpt {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+  .post-link .date {
+    margin-top: 0.6rem;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .footer {
+    margin-top: auto;
+    padding: 2rem 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @media (max-width: 600px) {
+    html { font-size: 16px; }
+    .masthead { padding: 4rem 0 2.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="masthead">
+    <h1>Bored Room Meeting</h1>
+    <p>Thinking out loud about AI, products, and the things nobody's built yet.</p>
+  </div>
+
+  <div class="posts">
+    <a href="/drawing-as-input" class="post-link">
+      <h2>Why Can't I Just Draw Something and Have AI Understand It?</h2>
+      <p class="excerpt">Drawing was humanity's first language. 40,000 years later, AI still can't understand someone sketching while talking.</p>
+      <div class="date">March 14, 2026</div>
+    </a>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="container">boredroommeeting.com</div>
+</div>
+
+</body>
+</html>
