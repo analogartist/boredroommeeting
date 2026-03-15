@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Theremin — Bored Room Meeting</title>
+<meta name="description" content="A gesture-controlled piano that turns hand movements into sound using computer vision and Web Audio.">
+<meta property="og:title" content="Theremin — Play music with hand gestures">
+<meta property="og:description" content="A gesture-controlled piano that turns hand movements into sound using computer vision and Web Audio.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://boredroommeeting.com/projects/theremin">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="/" class="site-name">Bored Room Meeting</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/#explorations">Explorations</a>
+      <a href="/#projects" class="active">Projects</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+  <div class="project-hero">
+    <h1>Theremin</h1>
+    <p class="project-subtitle">A gesture-controlled piano that turns hand movements into sound. Wave your hands in front of a webcam and play music — no keyboard, no touchscreen, just air.</p>
+  </div>
+
+  <div class="project-body">
+    <p>The idea was simple: what if you could play a piano by moving your hands in the air, like a theremin, but with the sound of a grand piano?</p>
+
+    <p>It uses MediaPipe Hands for real-time hand tracking through your webcam. Your right hand plays notes — pinch to trigger a note in melody mode, or spread all five fingers to play chords. Your left hand controls volume with a pinch-and-slide gesture, and toggles between melody and chord modes with a fist.</p>
+
+    <p>The sound comes from Tone.js using sampled Salamander Grand Piano — real piano recordings, not synthesized tones. Nine natural notes from B3 to C5, rendered on a full-screen canvas with particle effects and hand skeleton overlays.</p>
+
+    <a href="https://analogartist.github.io/Theremin" target="_blank" rel="noopener" class="try-it">Try it live</a>
+
+    <dl class="project-details">
+      <dt>Built with</dt>
+      <dd>MediaPipe Hands, Tone.js, HTML5 Canvas, vanilla JS</dd>
+      <dt>How to use</dt>
+      <dd>Open in Chrome on a device with a webcam. Give a thumbs-up to start. Right hand plays, left hand controls volume.</dd>
+      <dt>Source</dt>
+      <dd><a href="https://github.com/analogartist/Theremin" target="_blank" rel="noopener" style="color: var(--accent);">github.com/analogartist/Theremin</a></dd>
+    </dl>
+  </div>
+
+  <div class="onward">
+    <a href="/posts/drawing-as-input" class="onward-link">
+      <div class="onward-label">Related Exploration</div>
+      <div class="onward-title">Why Can't I Just Draw Something and Have AI Understand It?</div>
+    </a>
+  </div>
+
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-links">
+      <a href="https://github.com/analogartist" target="_blank" rel="noopener">GitHub</a>
+      <span>Twitter</span>
+      <span>LinkedIn</span>
+    </div>
+    boredroommeeting.com
+  </div>
+</footer>
+
+</body>
+</html>
