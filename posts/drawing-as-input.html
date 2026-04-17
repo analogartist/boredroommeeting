@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Why Can't I Just Draw Something and Have AI Understand It? — Bored Room Meeting</title>
-<meta name="description" content="Drawing was humanity's first language. 40,000 years later, AI still can't understand someone sketching while talking.">
+<meta name="description" content="Hacked a shared canvas where a human and Claude draw together. It works — but turn-based drawing isn't the real thing. The missing primitive is temporal fusion.">
 <meta property="og:title" content="Why Can't I Just Draw Something and Have AI Understand It?">
-<meta property="og:description" content="Drawing was humanity's first language. 40,000 years later, AI still can't understand someone sketching while talking.">
+<meta property="og:description" content="Hacked a shared canvas where a human and Claude draw together. It works — but turn-based drawing isn't the real thing. The missing primitive is temporal fusion.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://boredroommeeting.com/posts/drawing-as-input">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -64,24 +64,48 @@
 
     <hr>
 
-    <h2>The missing primitive</h2>
+    <h2>Then we hacked it</h2>
+
+    <p>Excalidraw is a React app. Its API exists — <code>updateScene</code>, <code>getSceneElements</code>, everything you'd need — but it's locked inside React's component state, invisible to outside scripts.</p>
+
+    <p>One walk through React's fiber tree extracted the full API. But that led to a new problem: <code>updateScene</code> is a full replace, not a merge. Every call wipes the canvas and rewrites it from the snapshot you provide. If the snapshot is even slightly stale, your collaborator's work disappears. We lost drawings, restored deleted elements, and wiped the canvas more times than I want to admit.</p>
+
+    <p>The real answer was simpler. Excalidraw's own clipboard paste is additive by design. Write element data to the clipboard in Excalidraw's JSON format, Cmd+V, and the element appears alongside everything already there. No scene replacement. No stale snapshots. No ghost elements.</p>
+
+    <p>We had a shared canvas. I drew with Apple Pencil. Claude read my handwriting, responded with text and shapes on the same surface. We built Tom Riddle's diary — a parchment page where I wrote in freehand and the diary answered in dark ink. Back and forth, on the same page, like the movie.</p>
+
+    <div class="video-embed">
+      <iframe src="https://www.youtube.com/embed/dbvFeQ1c68Y"
+              title="Drawing with Claude — shared Excalidraw canvas demo"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen></iframe>
+    </div>
+
+    <div class="callout">A human and an AI, drawing on the same whiteboard. No fork, no self-hosting, no custom infrastructure — just excalidraw.com and a clipboard hack.</div>
+
+    <hr>
+
+    <h2>What's still missing</h2>
+
+    <p>So we have a shared canvas. But it's still turn-based — I draw, I say "look," Claude reads and responds. That's better than uploading a screenshot, but it's not how real whiteboard collaboration feels.</p>
 
     <p>When two people whiteboard together, you don't draw something and then explain it. You draw <em>while</em> talking. Your collaborator watches the strokes form alongside your words. The meaning isn't in the drawing or the speech alone — it's in the pairing, fused by time.</p>
 
-    <p>You draw a box while saying "exchange." An arrow while saying "this calls OnRamp." A circle while saying "this is where we're stuck." No separate explanation needed.</p>
+    <p>You draw a circle while saying "this is the user." A box while saying "this is the app." An arrow while saying "they sign up here." A red circle while saying "this is where people drop off." No separate explanation needed.</p>
 
     <p>I started calling this <strong>temporal fusion</strong> — the simultaneous capture of drawing and voice, timestamped and interleaved:</p>
 
 <pre>
-<span class="time">[t=0.0s]</span> <span class="voice">voice: "here's how the payment flow works"</span>
-<span class="time">[t=1.2s]</span> <span class="stroke">stroke: rectangle, blue</span>
-<span class="time">[t=2.5s]</span> <span class="voice">voice: "this box is the exchange"</span>
+<span class="time">[t=0.0s]</span> <span class="voice">voice: "ok let me show you the user journey"</span>
+<span class="time">[t=1.2s]</span> <span class="stroke">stroke: circle, blue</span>
+<span class="time">[t=2.5s]</span> <span class="voice">voice: "this is the user"</span>
 <span class="time">[t=3.1s]</span> <span class="stroke">stroke: rectangle, green</span>
-<span class="time">[t=3.8s]</span> <span class="voice">voice: "and this is OnRamp"</span>
+<span class="time">[t=3.8s]</span> <span class="voice">voice: "this is our app"</span>
 <span class="time">[t=4.5s]</span> <span class="stroke">stroke: arrow connecting the two</span>
-<span class="time">[t=5.2s]</span> <span class="voice">voice: "this is the KYC call"</span>
-<span class="time">[t=6.0s]</span> <span class="stroke">stroke: red circle around first rectangle</span>
-<span class="time">[t=6.5s]</span> <span class="voice">voice: "this is where we're stuck"</span>
+<span class="time">[t=5.2s]</span> <span class="voice">voice: "they sign up here"</span>
+<span class="time">[t=6.0s]</span> <span class="stroke">stroke: red circle around the rectangle</span>
+<span class="time">[t=6.5s]</span> <span class="voice">voice: "this is where people drop off"</span>
 </pre>
 
     <p>The AI knows the red circle appeared while the user said "stuck." No separate explanation needed. The meaning is in the simultaneity — exactly how it works between humans. Exactly how it worked in those caves.</p>
@@ -92,20 +116,31 @@
 
     <h2>Where it leads</h2>
 
-    <p>The first version is a web app — not iPad-only, any device with a touchscreen and microphone — that captures strokes + voice with timestamps and sends the fused timeline to an LLM. Browser APIs already support pressure-sensitive stylus input. Web Speech API handles transcription. The MVP is a hosted webpage.</p>
+    <p>The shared canvas was Phase 0 — proof that bidirectional drawing is possible. The real product is a web app — any device with a touchscreen and microphone — that captures strokes and voice with timestamps and sends the fused timeline to an LLM. Browser APIs already support pressure-sensitive stylus input. Web Speech API handles transcription. The MVP is a hosted webpage.</p>
 
-    <p>But the bigger idea comes when you put two people on the same canvas. A teacher draws a circuit diagram while explaining it. A student circles a component and asks why. The AI — watching both streams, both voices — answers without the teacher stopping. A third participant on the whiteboard who never interrupts but always follows along.</p>
+    <p>But the bigger idea comes when you put two people on the same canvas. Two cofounders sketching a product architecture. Two engineers debugging a system diagram. Two people drawing and talking at the same time — and the AI following both streams, understanding who drew what and who said what, contributing when it has something useful to add. A third collaborator who never interrupts but always follows along.</p>
 
-    <p>Then: the AI becomes the teacher. A student says "teach me how transistors work." The AI draws on the canvas while narrating — building the diagram stroke by stroke, like a professor at a chalkboard. The student circles something they don't understand. The AI sees, hears, adapts.</p>
+    <p>One profound application: education. Imagine a student says "teach me how circuits work." The AI starts drawing on the canvas while narrating — building the diagram stroke by stroke, like a professor at a chalkboard. The student circles something they don't understand. The AI sees the circle, hears the question, adapts. A tutor that draws and teaches, not just chats.</p>
 
-    <p>Online tutoring is a massive, growing industry — billions of dollars, double-digit growth, every major platform racing to add AI. And every single one has added it the same way: as a text chatbot in a sidebar. The whiteboard — the surface where the best teaching actually happens — has zero AI participation. Nobody's built an AI that can pick up a marker.</p>
+    <p>Every major tutoring platform has added AI. Every single one added it the same way: a text chatbot in a sidebar. The whiteboard — the surface where the best teaching actually happens — has zero AI participation. Nobody's built an AI that can pick up a marker.</p>
+
+    <hr>
+
+    <h2>The question worth asking</h2>
+
+    <p>We started with a cave. A human, some ochre, a wall, and a voice echoing off stone. Drawing and sound, fused together — the oldest form of communication we know.</p>
+
+    <p>Somewhere along the way, we split them apart. Text in one box. Voice in another. Images in a third. Every AI product today treats these as separate inputs, processed in isolation. Nobody thought to put them back together. The most ancient form of human communication, and it's the one we forgot to build for.</p>
+
+    <p>We got a shared canvas working in one session. A human drawing and an AI responding on the same surface. It's a start — but it's still turn-based. The real thing is temporal fusion: drawing and talking at the same time, with AI that understands both as one.</p>
+
+    <p>The technology exists. The market is ready. The product isn't built yet.</p>
+
+    <p class="closing-question">Should we build it?</p>
+
+    <p class="signature">Written while exploring this idea live with Claude — March 2026</p>
 
   </article>
-
-  <div class="closing">
-    <p>40,000 years ago, drawing and sound in a cave may have sparked symbolic thought. Today, AI handles text, voice, images, video — but can't understand someone sketching while talking. The most ancient form of human communication, and it's the one we forgot to build for.</p>
-    <p class="last-line">I just want to draw something and have AI get it.</p>
-  </div>
 
   <div class="onward">
     <a href="/projects/theremin" class="onward-link">
